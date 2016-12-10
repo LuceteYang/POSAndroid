@@ -24,7 +24,7 @@ public class MenuDetailActivity extends AppCompatActivity {
     IngredientDao id;
     Button btn_menu_detail_back,btn_menu_detail_delete,btn_menu_detail_edit;
     TextView tv_menu_detail_name,tv_menu_detail_calory,tv_menu_detail_cost,tv_menu_detail_detail;
-    EditText et_menu_detail_name,et_menu_detail_calory,et_menu_detail_cost,et_menu_detail_detail;
+    EditText et_menu_detail_calory,et_menu_detail_cost,et_menu_detail_detail;
     int type;
     String menuName;
     Menu menuinfo;
@@ -44,7 +44,6 @@ public class MenuDetailActivity extends AppCompatActivity {
         tv_menu_detail_calory = (TextView)findViewById(R.id.tv_menu_detail_calory);
         tv_menu_detail_cost = (TextView)findViewById(R.id.tv_menu_detail_cost);
         tv_menu_detail_detail = (TextView)findViewById(R.id.tv_menu_detail_detail);
-        et_menu_detail_name = (EditText)findViewById(R.id.et_menu_detail_name);
         et_menu_detail_calory = (EditText)findViewById(R.id.et_menu_detail_calory);
         et_menu_detail_cost = (EditText)findViewById(R.id.et_menu_detail_cost);
         et_menu_detail_detail = (EditText)findViewById(R.id.et_menu_detail_detail);
@@ -74,8 +73,8 @@ public class MenuDetailActivity extends AppCompatActivity {
                 alert.setTitle("메뉴를 삭제하시겠습니까?");
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        id.deleteIngredientByMenu(menuinfo.getName());
                         md.deleteMenu(menuinfo.getName());
-//                id.deleteIngredientByMenu(menuinfo.getName());
                         MessageHelper.getInstance().sendMessage(MessageHelper.ActivityType.MENUACTIVITY, MessageHelper.MessageType.REFLASH);
                         finish();
                     }
@@ -89,7 +88,6 @@ public class MenuDetailActivity extends AppCompatActivity {
 
             }
         });
-
         initValue();
     }
     private void initValue(){
@@ -100,44 +98,32 @@ public class MenuDetailActivity extends AppCompatActivity {
             tv_menu_detail_calory.setText(String.valueOf(menuinfo.getCalory()));
             tv_menu_detail_cost.setText(String.valueOf(menuinfo.getCost()));
             tv_menu_detail_detail.setText(menuinfo.getDetail());
-            et_menu_detail_name.setVisibility(View.GONE);
             et_menu_detail_calory.setVisibility(View.GONE);
             et_menu_detail_cost.setVisibility(View.GONE);
             et_menu_detail_detail.setVisibility(View.GONE);
-            tv_menu_detail_name.setVisibility(View.VISIBLE);
             tv_menu_detail_calory.setVisibility(View.VISIBLE);
             tv_menu_detail_cost.setVisibility(View.VISIBLE);
             tv_menu_detail_detail.setVisibility(View.VISIBLE);
 
         }else if(type==2){
         //수정
-            et_menu_detail_name.setText(menuinfo.getName());
             et_menu_detail_calory.setText(String.valueOf(menuinfo.getCalory()));
             et_menu_detail_cost.setText(String.valueOf(menuinfo.getCost()));
             et_menu_detail_detail.setText(menuinfo.getDetail());
-            tv_menu_detail_name.setVisibility(View.GONE);
             tv_menu_detail_calory.setVisibility(View.GONE);
             tv_menu_detail_cost.setVisibility(View.GONE);
             tv_menu_detail_detail.setVisibility(View.GONE);
-            et_menu_detail_name.setVisibility(View.VISIBLE);
             et_menu_detail_calory.setVisibility(View.VISIBLE);
             et_menu_detail_cost.setVisibility(View.VISIBLE);
             et_menu_detail_detail.setVisibility(View.VISIBLE);
         }
     }
     private void checkEdit(){
-        String menuName = et_menu_detail_name.getText().toString();
         String menuCalory = et_menu_detail_calory.getText().toString();
         String menuCost = et_menu_detail_cost.getText().toString();
         String menuDetail = et_menu_detail_detail.getText().toString();
         boolean cancel = false;
         View focusView = null;
-
-        if (TextUtils.isEmpty(menuName)) {
-            et_menu_detail_name.setError(getString(R.string.error_field_required));
-            focusView = et_menu_detail_name;
-            cancel = true;
-        }
         if (TextUtils.isEmpty(menuCalory)) {
             et_menu_detail_calory.setError(getString(R.string.error_field_required));
             focusView = et_menu_detail_calory;
@@ -156,9 +142,7 @@ public class MenuDetailActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            id.editIngredientByMenu(menuinfo.getName(),menuName);
-            md.editMenu(menuinfo.getName(),menuName,Integer.parseInt(menuCost),menuDetail,Integer.parseInt(menuCalory));
-            this.menuName=menuName;
+            md.editMenu(menuName,Integer.parseInt(menuCost),menuDetail,Integer.parseInt(menuCalory));
             MessageHelper.getInstance().sendMessage(MessageHelper.ActivityType.MENUACTIVITY, MessageHelper.MessageType.REFLASH);
             type=1;
             initValue();

@@ -14,23 +14,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.posandroid.config.PropertyManager;
+import com.example.android.posandroid.dao.UserDao;
+import com.example.android.posandroid.ingredient.IngredientActivity;
 import com.example.android.posandroid.menu.MenuActivity;
-import com.example.android.posandroid.model.Menu;
 
-import java.util.Date;
-
-import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
     ActionBar actionBar;
     RelativeLayout btn_menu, btn_sales, btn_statistic, btn_ingredient;
-    Realm realm;
+    UserDao ud;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        realm = Realm.getDefaultInstance();
+        ud = new UserDao();
         TextView textView = new TextView(getApplicationContext());
         textView.setText("Hope's Table");
         textView.setTextSize(20);
@@ -67,20 +64,19 @@ public class MainActivity extends AppCompatActivity {
                 checkPassword(StatisticsActivity.class);
             }
         });
-        if (PropertyManager.getInstance().isFirst()) {
-            firstDataInput();
-        }
+
+
     }
+
     public void checkPassword(final Class act){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("비밀번호 입력");
-        // Set an EditText view to get user input
         final EditText input = new EditText(this);
         alert.setView(input);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString();
-                if(PropertyManager.getInstance().isPassword().equals(value)){
+                if(ud.Login(value)){
                     startActivity(new Intent(getApplicationContext(),act));
                 }else{
                     Toast.makeText(getApplicationContext(),"비밀번호를 확인해주세요",Toast.LENGTH_SHORT).show();
@@ -94,17 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 });
         alert.show();
     }
-    private void firstDataInput(){
-        realm.beginTransaction();
-//        Menu en = realm.createObject(Menu.class);
-//        Date date = new Date();
-//        en.setName("파스타");
-//        en.setCost(3000);
-////        en.setMenuDetail("English");
-//        en.setRegisterDate(date);
 
-        realm.commitTransaction();
-    }
 
 
 }

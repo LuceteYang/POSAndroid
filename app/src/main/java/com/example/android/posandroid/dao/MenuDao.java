@@ -48,10 +48,9 @@ public class MenuDao {
 
 
 //    메뉴수정
-public void editMenu(String oldname,String newname,int cost,String detail, int calory){
+public void editMenu(String name,int cost,String detail, int calory){
     realm.beginTransaction();
-    Menu menu = realm.where(Menu.class).equalTo("name",oldname).findFirst();
-    menu.setName(newname);
+    Menu menu = realm.where(Menu.class).equalTo("name",name).findFirst();
     menu.setCost(cost);
     menu.setCalory(calory);
     menu.setDetail(detail);

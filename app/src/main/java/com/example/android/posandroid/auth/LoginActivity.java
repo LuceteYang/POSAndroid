@@ -1,4 +1,4 @@
-package com.example.android.posandroid;
+package com.example.android.posandroid.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +13,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.posandroid.MainActivity;
+import com.example.android.posandroid.R;
 import com.example.android.posandroid.config.PropertyManager;
+import com.example.android.posandroid.dao.UserDao;
+import io.realm.Realm;
 
 public class LoginActivity extends AppCompatActivity {
     ActionBar actionBar;
     EditText et_pw;
     Button btn_login,btn_change_pw;
-
+    Realm realm;
+    UserDao ud;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         textView.setText("Hope's Table");
         textView.setTextSize(20);
         textView.setTextColor(getResources().getColor(R.color.colorWhite));
+        ud = new UserDao();
         actionBar = getSupportActionBar();
         actionBar.setCustomView(textView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
+        realm = Realm.getDefaultInstance();
         et_pw = (EditText)findViewById(R.id.et_pw);
         btn_login = (Button)findViewById(R.id.btn_login);
         btn_change_pw = (Button)findViewById(R.id.btn_change_pw);
@@ -47,7 +54,9 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
-
+        if (PropertyManager.getInstance().isFirst()) {
+            firstDataInput();
+        }
     }
 
 
@@ -68,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if(PropertyManager.getInstance().isPassword().equals(password)){
+            if(ud.Login(password)){
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 Toast.makeText(getApplication(),"Welcome!!",Toast.LENGTH_SHORT).show();
                 finish();
@@ -82,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
-
+    private void firstDataInput(){
+        ud.insertUser("000000");
+    }
 
 }

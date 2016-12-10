@@ -1,4 +1,4 @@
-package com.example.android.posandroid;
+package com.example.android.posandroid.auth;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,18 +8,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.posandroid.MainActivity;
+import com.example.android.posandroid.R;
 import com.example.android.posandroid.config.PropertyManager;
+import com.example.android.posandroid.dao.UserDao;
 
 public class ChangePwActivity extends AppCompatActivity {
 
     EditText et_new_pw, et_old_pw;
 
     Button btn_change_cancel, btn_change;
+    UserDao ud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_pw);
+        ud = new UserDao();
         et_new_pw = (EditText)findViewById(R.id.et_new_pw);
         et_old_pw = (EditText)findViewById(R.id.et_old_pw);
         btn_change_cancel = (Button)findViewById(R.id.btn_change_cancel);
@@ -35,9 +40,9 @@ public class ChangePwActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String old_pw = et_old_pw.getText().toString();
                 String new_pw = et_new_pw.getText().toString();
-                if(old_pw.equals(PropertyManager.getInstance().isPassword())){
+                if(ud.Login(old_pw)){
                     if(isPasswordValid(new_pw)){
-                        PropertyManager.getInstance().setPassword(new_pw);
+                        ud.changePassword(new_pw);
                         Toast.makeText(getApplication(),"비밀번호가 변경되었습니다.",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
