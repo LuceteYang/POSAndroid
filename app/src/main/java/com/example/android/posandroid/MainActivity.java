@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.posandroid.config.PropertyManager;
 import com.example.android.posandroid.menu.MenuActivity;
 import com.example.android.posandroid.model.Menu;
 
@@ -95,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
     }
     private void firstDataInput(){
         realm.beginTransaction();
-        Menu en = realm.createObject(Menu.class);
-        Date date = new Date();
-        en.setName("파스타");
-        en.setCost(3000);
-//        en.setMenuDetail("English");
-        en.setRegisterDate(date);
+//        Menu en = realm.createObject(Menu.class);
+//        Date date = new Date();
+//        en.setName("파스타");
+//        en.setCost(3000);
+////        en.setMenuDetail("English");
+//        en.setRegisterDate(date);
 
         realm.commitTransaction();
     }

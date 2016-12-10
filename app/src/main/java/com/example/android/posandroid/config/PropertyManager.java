@@ -1,4 +1,4 @@
-package com.example.android.posandroid;
+package com.example.android.posandroid.config;
 
 /**
  * Created by User on 2016-09-05.

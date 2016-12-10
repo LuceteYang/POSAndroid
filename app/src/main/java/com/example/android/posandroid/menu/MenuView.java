@@ -32,7 +32,7 @@ public class MenuView extends RelativeLayout {
     }
 
     public void setVocaInfo(Menu menuinfo) {
-        tv_menu.setText(menuinfo.getMenuName());
-        tv_price.setText(menuinfo.getCost());
+        tv_menu.setText(menuinfo.getName());
+        tv_price.setText(String.valueOf(menuinfo.getCost()));
     }
 }

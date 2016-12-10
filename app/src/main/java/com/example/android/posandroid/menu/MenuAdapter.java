@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
+import com.example.android.posandroid.dao.MenuDao;
 import com.example.android.posandroid.model.Menu;
 
 import java.util.ArrayList;
@@ -18,13 +19,17 @@ import io.realm.RealmList;
 /**
  * Created by User on 2016-11-17.
  */
-public class MenuaAdapter extends BaseAdapter {
+public class MenuAdapter extends BaseAdapter {
 
     List<Menu> items = new ArrayList<Menu >();
     Context mContext;
     Realm realm;
-    public MenuaAdapter(Context context) {
+    MenuDao md;
+    public MenuAdapter(Context context) {
         mContext=context;
+        realm = Realm.getDefaultInstance();
+        md = new MenuDao();
+        items = md.menuList();
     }
 
     @Override

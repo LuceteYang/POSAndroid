@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.posandroid.config.PropertyManager;
+
 public class ChangePwActivity extends AppCompatActivity {
 
     EditText et_new_pw, et_old_pw;

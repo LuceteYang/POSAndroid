@@ -1,4 +1,4 @@
-package com.example.android.posandroid;
+package com.example.android.posandroid.config;
 
 import android.app.Application;
 import android.content.Context;
