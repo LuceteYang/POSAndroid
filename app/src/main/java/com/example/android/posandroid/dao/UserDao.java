@@ -14,7 +14,7 @@ public class UserDao {
         this.realm = Realm.getDefaultInstance();
     }
 
-    //    메뉴추가
+    //    유저 등록
     public void insertUser(String  pw){
         realm.beginTransaction();
         User user = realm.createObject(User.class);
@@ -22,13 +22,14 @@ public class UserDao {
         realm.commitTransaction();
     }
 
-    //    메뉴추가
+    //    비밀번호 변경
     public void changePassword(String pw){
         User user = realm.where(User.class).findFirst();
         realm.beginTransaction();
         user.setPassword(pw);
         realm.commitTransaction();
     }
+    //    로그인
     public boolean Login(String pw){
         if(pw.equals(realm.where(User.class).findFirst().getPassword())){
             return true;

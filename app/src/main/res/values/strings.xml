@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POSAndroid</string>
+    <string name="app_name">HopesTable</string>
     <string name="title_activity_login1">Sign in</string>
 
     <!-- Strings related to login -->
@@ -15,5 +15,14 @@
         completions."</string>
     <string name="prompt_old_password">기존 비밀번호 입력</string>
     <string name="prompt_new_password">새 비밀번호 입력</string>
+    <string-array name="values">
+        <item>Item 1</item>
+        <item>Item 2</item>
+        <item>Item 3</item>
+        <item>Item 4</item>
+        <item>Item 5</item>
+        <item>Item 6</item>
+    </string-array>
+
 
 </resources>

@@ -58,14 +58,14 @@ public  class IngredientDao {
         ing.setDetail(detail);
         realm.commitTransaction();
     }
-
+    //  재료주문
     public void editIngredientOrder(int id, int stock){
         realm.beginTransaction();
         Ingredient ing = realm.where(Ingredient.class).equalTo("id",id).findFirst();
         ing.setStock(ing.getStock()+stock);
         realm.commitTransaction();
     }
-//    재료주문
+
 
 
 
