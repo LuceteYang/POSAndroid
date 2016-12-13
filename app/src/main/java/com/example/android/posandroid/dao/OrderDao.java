@@ -34,13 +34,20 @@ public class OrderDao {
 
     //    주문내역조회
     public Order orderInfo(int tableId){
-        return realm.where(Order.class).equalTo("table",tableId).findFirst();
+        return realm.where(Order.class).equalTo("table",tableId).isNull("paymentDate").findFirst();
     }
 
     public void updateCount(int orderId,int headcount){
         realm.beginTransaction();
         Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
         order.setHeadcount(headcount);
+        realm.commitTransaction();
+    }
+
+    public void updatePrice(int orderId, int price){
+        realm.beginTransaction();
+        Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
+        order.setPrice(price);
         realm.commitTransaction();
     }
 

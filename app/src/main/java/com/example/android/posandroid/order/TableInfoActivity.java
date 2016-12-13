@@ -1,5 +1,6 @@
 package com.example.android.posandroid.order;
 
+import android.content.Intent;
 import android.support.annotation.StringDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.posandroid.PayActivity;
 import com.example.android.posandroid.R;
 import com.example.android.posandroid.config.MessageHelper;
 import com.example.android.posandroid.dao.MenuDao;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class TableInfoActivity extends AppCompatActivity {
     int tableId;
+    Order o;
     TextView tv_table_info_head_minus,tv_table_info_head_plus,tv_table_info_head,tv_table_info_number;
     Button btn_table_info_back,btn_table_info_order,btn_table_info_pay, btn_table_info_edit;
     OrderMenuAdapter oma;
@@ -62,22 +65,27 @@ public class TableInfoActivity extends AppCompatActivity {
         btn_table_info_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order o = od.orderInfo(tableId);
+                o = od.orderInfo(tableId);
                 od.updateCount(o.getId(),Integer.valueOf(tv_table_info_head.getText().toString()));
+                int total=0;
                 for(int i=0;i<menulist.size();i++){
-                    OrderMenu menuInfo = omd.menuInfo(oma.getItem(i).getMenuName(),o.getId());
-                    if(oma.getItem(i).getCount()>0) {
+                    OrderMenuItem omi = oma.getItem(i);
+                    OrderMenu menuInfo = omd.menuInfo(omi.getMenuName(),o.getId());
+                    Menu a = md.menuInfo(omi.getMenuName());
+                    if(omi.getCount()>0) {
                         if (menuInfo == null) {
-                            omd.insertOrderMenu(oma.getItem(i).getMenuName(), o.getId(), oma.getItem(i).getCount());
+                            omd.insertOrderMenu(omi.getMenuName(), o.getId(), omi.getCount());
                         } else {
-                            omd.updateOrderMenu(oma.getItem(i).getMenuName(), o.getId(), oma.getItem(i).getCount());
+                            omd.updateOrderMenu(omi.getMenuName(), o.getId(), omi.getCount());
                         }
+                        total += a.getCost()*omi.getCount();
                     }else{
                         if (menuInfo != null) {
-                            omd.deleteOrderMenu(oma.getItem(i).getMenuName(), o.getId());
+                            omd.deleteOrderMenu(omi.getMenuName(), o.getId());
                         }
                     }
                 }
+                od.updatePrice(o.getId(),total);
                 MessageHelper.getInstance().sendMessage(MessageHelper.ActivityType.MAINACTIVITY, MessageHelper.MessageType.REFLASH);
                 finish();
             }
@@ -96,11 +104,16 @@ public class TableInfoActivity extends AppCompatActivity {
                 }else {
                     int headcount = Integer.valueOf(tv_table_info_head.getText().toString());
                     Order o = od.insertOrder(tableId, headcount);
+                    int total=0;
                     for (int i = 0; i < menulist.size(); i++) {
                         if (oma.getItem(i).getCount() > 0) {
-                            omd.insertOrderMenu(oma.getItem(i).getMenuName(), o.getId(), oma.getItem(i).getCount());
+                            OrderMenuItem omi = oma.getItem(i);
+                            Menu a = md.menuInfo(omi.getMenuName());
+                            total += a.getCost()*omi.getCount();
+                            omd.insertOrderMenu(omi.getMenuName(), o.getId(), omi.getCount());
                         }
                     }
+                    od.updatePrice(o.getId(),total);
                     MessageHelper.getInstance().sendMessage(MessageHelper.ActivityType.MAINACTIVITY, MessageHelper.MessageType.REFLASH);
                     finish();
                 }
@@ -124,13 +137,22 @@ public class TableInfoActivity extends AppCompatActivity {
                 }
             }
         });
+        btn_table_info_pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),PayActivity.class);
+                i.putExtra("orderId",o.getId());
+                i.putExtra("tableId",tableId);
+                startActivity(i);
+            }
+        });
 
         tv_table_info_number.setText("<"+ String.valueOf(tableId)+"번테이블>");
         initValue();
     }
     private void initValue(){
         oma.clear();
-        Order o = od.orderInfo(tableId);
+        o = od.orderInfo(tableId);
         if(o==null){
             tv_table_info_head.setText(String.valueOf(0));
             btn_table_info_order.setVisibility(View.VISIBLE);

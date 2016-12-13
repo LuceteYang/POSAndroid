@@ -45,6 +45,10 @@ public class OrderMenuDao {
         menu.deleteFromRealm();
         realm.commitTransaction();
     }
+    //    메뉴목록출력
+    public List<OrderMenu> orderMenuList(int orderId){
+        return realm.where(OrderMenu.class).equalTo("orderId",orderId).findAll();
+    }
 
 /*    //    메뉴추가
     public void insertMenu(String name,int cost,String detail, int calory){
