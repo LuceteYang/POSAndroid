@@ -7,14 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.posandroid.PayActivity">
+    tools:context=".order.PayActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="결제 내역"
-        android:id="@+id/textView34"
+        android:id="@+id/tv_pay_title"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -24,7 +24,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tv_pay_order"
-        android:layout_below="@+id/textView34"
+        android:layout_below="@+id/tv_pay_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:gravity="center" />
@@ -32,34 +32,66 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/et_number"
         android:hint="내용을 입력해주세요"
         android:layout_below="@+id/tv_pay_order"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/tv_pay_order" />
+        android:layout_alignEnd="@+id/tv_pay_order"
+        android:inputType="number"
+        android:text="내용을 입력해주세요"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="현금"
         android:id="@+id/btn_pay_cash"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/et_number"
+        android:layout_alignParentStart="true"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="쿠폰"
         android:id="@+id/btn_pay_coupon"
-        android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/et_number"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="카드"
         android:id="@+id/btn_pay_card"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/et_number"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:id="@+id/btn_pay_complete"
+        android:layout_below="@+id/tv_pay_type"
+        android:layout_toEndOf="@+id/tv_pay_title" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="결제수단 변경"
+        android:id="@+id/btn_pay_type_change"
+        android:layout_below="@+id/tv_pay_type"
+        android:layout_toStartOf="@+id/tv_pay_title" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/tv_pay_type"
+        android:layout_below="@+id/tv_pay_order"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" />
 
 </RelativeLayout>

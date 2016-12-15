@@ -51,6 +51,15 @@ public class OrderDao {
         realm.commitTransaction();
     }
 
+    public void orderPay(int orderId, int paymentType){
+        Date now = new Date();
+        realm.beginTransaction();
+        Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
+        order.setPaymentType(paymentType);
+        order.setPaymentDate(now);
+        realm.commitTransaction();
+    }
+
 /*    //    메뉴목록출력
     public List<Menu> menuList(){
         return realm.where(Menu.class).findAll();

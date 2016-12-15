@@ -20,13 +20,14 @@
         <activity android:name=".auth.ChangePwActivity" />
         <activity android:name=".menu.MenuActivity" />
         <activity android:name=".ingredient.IngredientActivity" />
-        <activity android:name=".SalesActivity" />
-        <activity android:name=".StatisticsActivity" />
+        <activity android:name=".sales.SalesActivity" />
+        <activity android:name=".statistics.StatisticsActivity" />
         <activity android:name=".menu.MenuDetailActivity" />
         <activity android:name=".menu.MenuAddActivity" />
         <activity android:name=".ingredient.IngredientDetailActivity" />
         <activity android:name=".order.TableInfoActivity" />
-        <activity android:name=".PayActivity"></activity>
+        <activity android:name=".order.PayActivity" />
+        <activity android:name=".statistics.StatisticsDetailActivity"></activity>
     </application>
 
 </manifest>

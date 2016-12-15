@@ -26,6 +26,8 @@ import com.example.android.posandroid.menu.MenuActivity;
 import com.example.android.posandroid.model.Order;
 import com.example.android.posandroid.model.OrderMenu;
 import com.example.android.posandroid.order.TableInfoActivity;
+import com.example.android.posandroid.sales.SalesActivity;
+import com.example.android.posandroid.statistics.StatisticsActivity;
 
 import java.util.List;
 

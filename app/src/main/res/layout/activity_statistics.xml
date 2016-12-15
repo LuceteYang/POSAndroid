@@ -7,6 +7,50 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.posandroid.StatisticsActivity">
+    tools:context=".statistics.StatisticsActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="메뉴"
+        android:id="@+id/btn_statistics_menu"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="테이블"
+        android:id="@+id/btn_statistics_table"
+        android:layout_below="@+id/btn_statistics_menu"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="요일"
+        android:id="@+id/btn_statistics_weekday"
+        android:layout_below="@+id/btn_statistics_table"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="시간대"
+        android:id="@+id/btn_statistics_time"
+        android:layout_below="@+id/btn_statistics_weekday"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뒤로"
+        android:id="@+id/btn_statistics_back"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
