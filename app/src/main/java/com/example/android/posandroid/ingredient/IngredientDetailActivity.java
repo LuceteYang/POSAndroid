@@ -82,7 +82,7 @@ public class IngredientDetailActivity extends AppCompatActivity {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input.getText().toString();
-                        iod.insertIngredientOrder(ingId,Integer.valueOf(value));
+                        iod.insertIngredientOrder(ingId,Integer.valueOf(value),ingInfo.getCost());
                         id.editIngredientOrder(ingId,Integer.valueOf(value));
                         initValue();
                         MessageHelper.getInstance().sendMessage(MessageHelper.ActivityType.INGREDIENTACTIVITY, MessageHelper.MessageType.REFLASH);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.android.posandroid.MainActivity;
 import com.example.android.posandroid.R;
+import com.example.android.posandroid.dao.IngredientDao;
 import com.example.android.posandroid.dao.MenuDao;
 import com.example.android.posandroid.dao.OrderDao;
 import com.example.android.posandroid.dao.OrderMenuDao;
@@ -32,8 +33,10 @@ public class PayActivity extends AppCompatActivity {
     MenuDao md;
     OrderDao od;
     PayNumberDao pnd;
+    IngredientDao id;
     int type;
     int payType;    //1.현금 2,쿠폰 3.카드
+    List<OrderMenu> omlist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +56,9 @@ public class PayActivity extends AppCompatActivity {
         od = new OrderDao();
         md = new MenuDao();
         pnd = new PayNumberDao();
+        id = new IngredientDao();
         String text="";
-        List<OrderMenu> omlist = omd.orderMenuList(orderId);
+        omlist = omd.orderMenuList(orderId);
         for(int i=0;i<omlist.size();i++){
             Menu a = md.menuInfo(omlist.get(i).getMenuName());
             text += omlist.get(i).getMenuName()+"X"+String.valueOf(omlist.get(i).getCount())+"------"+String.valueOf(a.getCost()*omlist.get(i).getCount())+"원"+ "\n";
@@ -106,6 +110,9 @@ public class PayActivity extends AppCompatActivity {
                     int num= Integer.valueOf(et_number.getText().toString());
                     pnd.saveNumber(orderId,num);
                 }
+                for(int i=0;i<omlist.size();i++){
+                    id.spentIngredient(omlist.get(i).getMenuName(),omlist.get(i).getCount());
+                }
                 Intent intent = new Intent(PayActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                         IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
@@ -149,7 +156,6 @@ public class PayActivity extends AppCompatActivity {
             tv_pay_type.setVisibility(View.VISIBLE);
             btn_pay_type_change.setVisibility(View.VISIBLE);
             btn_pay_complete.setVisibility(View.VISIBLE);
-
         }
     }
 }

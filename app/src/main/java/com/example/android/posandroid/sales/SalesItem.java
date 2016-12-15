@@ -1,25 +1,36 @@
 package com.example.android.posandroid.sales;
 
+import java.util.Date;
+
 /**
  * Created by User on 2016-12-11.
  */
 public class SalesItem {
-    private String menuName;
-    private int count;
+    private String saleTitle;
+    private String cost;
+    private Date date;
 
-    public String getMenuName() {
-        return menuName;
+    public String getSaleTitle() {
+        return saleTitle;
     }
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
+    public void setSaleTitle(String saleTitle) {
+        this.saleTitle = saleTitle;
     }
 
-    public int getCount() {
-        return count;
+    public String getCost() {
+        return cost;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

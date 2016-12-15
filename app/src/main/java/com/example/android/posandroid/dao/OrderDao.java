@@ -59,6 +59,10 @@ public class OrderDao {
         order.setPaymentDate(now);
         realm.commitTransaction();
     }
+    public List<Order> allOrderInfo(){
+        return realm.where(Order.class).isNotNull("paymentDate").findAll();
+
+    }
 
 /*    //    메뉴목록출력
     public List<Menu> menuList(){
@@ -83,7 +87,6 @@ public class OrderDao {
         realm.commitTransaction();
     }*/
 
-//    주문내역입력
 //    주문내역수정
 //    주문내역출력
 //    영수증출력

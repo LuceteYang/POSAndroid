@@ -1,7 +1,7 @@
 package com.example.android.posandroid.dao;
 
-import com.example.android.posandroid.model.Ingredient;
 import com.example.android.posandroid.model.IngredientOrder;
+import com.example.android.posandroid.model.Order;
 
 import java.util.Date;
 import java.util.List;
@@ -19,44 +19,22 @@ public  class IngredientOrderDao {
 
     Realm realm;
 //    재료주문
-    public void insertIngredientOrder(int ingId, int stock){
+    public void insertIngredientOrder(int ingId, int stock, int price){
         Date now = new Date();
         realm.beginTransaction();
         IngredientOrder ing = realm.createObject(IngredientOrder.class);
         ing.setId(realm.where(IngredientOrder.class).max("id").intValue() + 1);
         ing.setStock(stock);
         ing.setIngId(ingId);
+        ing.setPrice(price);
         ing.setDate(now);
         realm.commitTransaction();
     }
 
-    //    재료삭제
-    public void deleteIngredientByMenu(String menuName){
-        realm.beginTransaction();
-        Ingredient ingredient = realm.where(Ingredient.class).equalTo("menuName",menuName).findFirst();
-        ingredient.deleteFromRealm();
-        realm.commitTransaction();
+    public List<IngredientOrder> allIngredientOrderInfo(){
+        return realm.where(IngredientOrder.class).findAll();
     }
 
-    //    재료목록출력
-    public List<Ingredient> ingredientList(){
-        return realm.where(Ingredient.class).findAll();
-    }
-
-   //    재료상세조회
-    public Ingredient ingInfo(int id){
-        return realm.where(Ingredient.class).equalTo("id",id).findFirst();
-
-    }
-   //    재료수정
-    public void editIngredient(int id, int cost, String detail, int stock){
-        realm.beginTransaction();
-        Ingredient ing = realm.where(Ingredient.class).equalTo("id",id).findFirst();
-        ing.setCost(cost);
-        ing.setStock(stock);
-        ing.setDetail(detail);
-        realm.commitTransaction();
-    }
 
 //    지출정보요청
 //    지출상세정보조회

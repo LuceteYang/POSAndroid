@@ -65,6 +65,13 @@ public  class IngredientDao {
         ing.setStock(ing.getStock()+stock);
         realm.commitTransaction();
     }
+    //주문시 재료소모
+    public void spentIngredient(String menuName, int stock){
+        realm.beginTransaction();
+        Ingredient ing = realm.where(Ingredient.class).equalTo("menuName",menuName).findFirst();
+        ing.setStock(ing.getStock()-stock);
+        realm.commitTransaction();
+    }
 
 
 

@@ -48,13 +48,13 @@ public class MenuDao {
     }
 
 
-//    메뉴수정
-public void editMenu(String name,int cost,String detail, int calory){
-    realm.beginTransaction();
-    Menu menu = realm.where(Menu.class).equalTo("name",name).findFirst();
-    menu.setCost(cost);
-    menu.setCalory(calory);
-    menu.setDetail(detail);
-    realm.commitTransaction();
-}
+    //    메뉴수정
+    public void editMenu(String name,int cost,String detail, int calory){
+        realm.beginTransaction();
+        Menu menu = realm.where(Menu.class).equalTo("name",name).findFirst();
+        menu.setCost(cost);
+        menu.setCalory(calory);
+        menu.setDetail(detail);
+        realm.commitTransaction();
+    }
 }
