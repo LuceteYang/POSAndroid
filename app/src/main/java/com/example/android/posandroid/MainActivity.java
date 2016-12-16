@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,49 +121,37 @@ public class MainActivity extends AppCompatActivity {
         tv_main_table_one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",1);
-                startActivity(i);
+                clickTable(1);
             }
         });
         tv_main_table_two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",2);
-                startActivity(i);
+                clickTable(2);
             }
         });
         tv_main_table_three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",3);
-                startActivity(i);
+                clickTable(3);
             }
         });
         tv_main_table_four.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",4);
-                startActivity(i);
+                clickTable(4);
             }
         });
         tv_main_table_five.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",5);
-                startActivity(i);
+                clickTable(5);
             }
         });
         tv_main_table_six.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
-                i.putExtra("tableId",6);
-                startActivity(i);
+                clickTable(6);
             }
         });
 
@@ -258,6 +247,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         alert.show();
+    }
+    private void clickTable(final int tableId) {
+
+        Order o = od.orderInfo(tableId);
+        if (o == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("인원 수");
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            alert.setView(input);
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    if(input.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(),"인원수를 입력해주세요!",Toast.LENGTH_SHORT).show();
+                    }else{
+                    int value = Integer.valueOf(input.getText().toString());
+                    Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
+                    i.putExtra("tableId", tableId);
+                    i.putExtra("headcount", value);
+                    startActivity(i);
+                    }
+                }
+            });
+            alert.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    });
+            alert.show();
+        }else {
+            Intent i = new Intent(getApplicationContext(), TableInfoActivity.class);
+            i.putExtra("tableId", tableId);
+            i.putExtra("headcount", 0);
+            startActivity(i);
+        }
     }
 
     private void firstDataInput(){

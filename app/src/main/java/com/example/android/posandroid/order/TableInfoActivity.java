@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.android.posandroid.R;
 import com.example.android.posandroid.config.MessageHelper;
+import com.example.android.posandroid.dao.IngredientDao;
 import com.example.android.posandroid.dao.MenuDao;
 import com.example.android.posandroid.dao.OrderDao;
 import com.example.android.posandroid.dao.OrderMenuDao;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class TableInfoActivity extends AppCompatActivity {
     int tableId;
+    int headcount;
     Order o;
     TextView tv_table_info_head_minus,tv_table_info_head_plus,tv_table_info_head,tv_table_info_number;
     Button btn_table_info_back,btn_table_info_order,btn_table_info_pay, btn_table_info_edit;
@@ -30,6 +32,7 @@ public class TableInfoActivity extends AppCompatActivity {
     MenuDao md;
     OrderDao od;
     OrderMenuDao omd;
+    IngredientDao id;
     List<Menu> menulist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,12 @@ public class TableInfoActivity extends AppCompatActivity {
         btn_table_info_edit = (Button)findViewById(R.id.btn_table_info_edit);
         lv_table_menu = (ListView)findViewById(R.id.lv_table_menu);
         tableId  = getIntent().getExtras().getInt("tableId");
+        headcount  = getIntent().getExtras().getInt("headcount");
         oma = new OrderMenuAdapter(getApplicationContext(),tableId);
         md = new MenuDao();
         od = new OrderDao();
         omd = new OrderMenuDao();
+        id = new IngredientDao();
         menulist = md.menuList();
         lv_table_menu.setAdapter(oma);
         btn_table_info_back.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +94,24 @@ public class TableInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean result=true;
+                int errorType =0;
                 for(int i=0;i<menulist.size();i++){
-                    if(oma.getItem(i).getCount()>0){
+                    OrderMenuItem omi = oma.getItem(i);
+                    if(omi.getCount()>0){
                         result=false;
+                        errorType =1;
                     }
+                    if(omi.getCount()>id.ingInfoByMenuName(omi.getMenuName()).getStock()){
+                        result = true;
+                        errorType =2;
+                    };
                 }
                 if(result){
-                    Toast.makeText(getApplication(),"메뉴가 선택되지 않았습니다.",Toast.LENGTH_SHORT).show();
+                    if(errorType==2){
+                        Toast.makeText(getApplication(),"재고가 없습니다.",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getApplication(),"메뉴가 선택되지 않았습니다.",Toast.LENGTH_SHORT).show();
+                    }
                 }else {
                     int headcount = Integer.valueOf(tv_table_info_head.getText().toString());
                     Order o = od.insertOrder(tableId, headcount);
@@ -149,7 +165,7 @@ public class TableInfoActivity extends AppCompatActivity {
         oma.clear();
         o = od.orderInfo(tableId);
         if(o==null){
-            tv_table_info_head.setText(String.valueOf(0));
+            tv_table_info_head.setText(String.valueOf(headcount));
             btn_table_info_order.setVisibility(View.VISIBLE);
             btn_table_info_pay.setVisibility(View.GONE);
             btn_table_info_edit.setVisibility(View.GONE);

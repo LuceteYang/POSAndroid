@@ -49,6 +49,11 @@ public  class IngredientDao {
         return realm.where(Ingredient.class).equalTo("id",id).findFirst();
 
     }
+    //    재료상세조회
+    public Ingredient ingInfoByMenuName(String menuName){
+        return realm.where(Ingredient.class).equalTo("menuName",menuName).findFirst();
+
+    }
    //    재료수정
     public void editIngredient(int id, int cost, String detail, int stock){
         realm.beginTransaction();

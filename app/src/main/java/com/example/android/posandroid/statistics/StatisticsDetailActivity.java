@@ -17,6 +17,7 @@ import com.example.android.posandroid.model.Order;
 import com.example.android.posandroid.model.OrderMenu;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -135,19 +136,18 @@ public class StatisticsDetailActivity extends AppCompatActivity {
             //요일
             tv_best_statistics.setText("Best 요일");
             tv_worst_statistics.setText("Worst 요일");
-
-        }else if(type==4){
-            //시간
-            tv_best_statistics.setText("Best 시간");
-            tv_worst_statistics.setText("Worst 시간");
-
             Map<String,Integer> hm = new HashMap<String, Integer>();
             List<Order> omList = od.allOrderInfo();
             for(int i=0;i<omList.size();i++){
-                if(hm.get(String.valueOf(omList.get(i).getTable()))==null){
-                    hm.put(String.valueOf(omList.get(i).getTable()),1);
+                Calendar c = Calendar.getInstance();
+                c.setTime(omList.get(i).getDate());
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                Log.i(String.valueOf(dayOfWeek),"sd");
+                String key = weekday(dayOfWeek);
+                if(hm.get(key)==null){
+                    hm.put(key,1);
                 }else{
-                    hm.put(String.valueOf(omList.get(i).getTable()),hm.get(String.valueOf(omList.get(i).getTable()))+1);
+                    hm.put(key,hm.get(key)+1);
                 }
             }
             List<String> tableList = new ArrayList<>();
@@ -161,7 +161,7 @@ public class StatisticsDetailActivity extends AppCompatActivity {
             int j=1;
             for(int i=0;i<tableList.size();i++){
                 if(j<4){
-                    str+=String.valueOf(j)+". "+tableList.get(i)+"번 테이블"+"\n";
+                    str+=String.valueOf(j)+". "+tableList.get(i)+"\n";
                 }
                 j++;
             }
@@ -170,7 +170,48 @@ public class StatisticsDetailActivity extends AppCompatActivity {
             int t=1;
             for(int i=tableList.size();i>0;i--){
                 if(t<4){
-                    str1+=String.valueOf(t)+". "+tableList.get(i-1)+"번 테이블"+"\n";
+                    str1+=String.valueOf(t)+". "+tableList.get(i-1)+"\n";
+                }
+                t++;
+            }
+            tv_best_content.setText(str1);
+
+        }else if(type==4){
+            //시간
+            tv_best_statistics.setText("Best 시간");
+            tv_worst_statistics.setText("Worst 시간");
+
+            Map<String,Integer> hm = new HashMap<String, Integer>();
+            List<Order> omList = od.allOrderInfo();
+            for(int i=0;i<omList.size();i++){
+                String key = String.valueOf(omList.get(i).getDate().getHours());
+                if(hm.get(key)==null){
+                    hm.put(key,1);
+                }else{
+                    hm.put(key,hm.get(key)+1);
+                }
+            }
+            List<String> tableList = new ArrayList<>();
+            hm= sortByValue(hm);
+            for (Map.Entry<String,Integer> entry : hm.entrySet()) {
+                //정렬한 리스트에서 순번을 배열번호로 변경하여 원본 리스트에서 추출
+                Log.i(String.valueOf(entry.getKey()),String.valueOf(entry.getValue()));
+                tableList.add(entry.getKey());
+            }
+            String str="";
+            int j=1;
+            for(int i=0;i<tableList.size();i++){
+                if(j<4){
+                    str+=String.valueOf(j)+". "+tableList.get(i)+"시"+"\n";
+                }
+                j++;
+            }
+            tv_worst_content.setText(str);
+            String str1="";
+            int t=1;
+            for(int i=tableList.size();i>0;i--){
+                if(t<4){
+                    str1+=String.valueOf(t)+". "+tableList.get(i-1)+"시"+"\n";
                 }
                 t++;
             }
@@ -215,5 +256,24 @@ public class StatisticsDetailActivity extends AppCompatActivity {
             System.out.println("Key : " + entry.getKey()
                     + " Value : " + entry.getValue());
         }
+    }
+    public String weekday(int day) {
+        switch (day) {
+            case 1:
+                return "일요일";
+            case 2:
+                return "월요일";
+            case 3:
+                return "화요일";
+            case 4:
+                return "수요일";
+            case 5:
+                return "목요일";
+            case 6:
+                return "금요일";
+            case 7:
+                return "토요일";
+        }
+        return null;
     }
 }
