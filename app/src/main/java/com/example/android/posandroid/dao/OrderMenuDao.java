@@ -50,6 +50,11 @@ public class OrderMenuDao {
         return realm.where(OrderMenu.class).equalTo("orderId",orderId).findAll();
     }
 
+    //    메뉴통계조회
+    public List<OrderMenu> orderMenuListByMenu(String menuName){
+        return realm.where(OrderMenu.class).equalTo("menuName",menuName).findAll();
+    }
+
 /*    //    메뉴추가
     public void insertMenu(String name,int cost,String detail, int calory){
         Date now = new Date();

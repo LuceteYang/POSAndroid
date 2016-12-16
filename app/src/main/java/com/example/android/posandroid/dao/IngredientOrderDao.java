@@ -30,15 +30,30 @@ public  class IngredientOrderDao {
         ing.setDate(now);
         realm.commitTransaction();
     }
-
+    //    지출정보출력
     public List<IngredientOrder> allIngredientOrderInfo(){
         return realm.where(IngredientOrder.class).findAll();
+    }
+    //    지출상세정보조회
+    public IngredientOrder IngredientOrderInfo(int iodId){
+        return realm.where(IngredientOrder.class).equalTo("id",iodId).findFirst();
+    }
+    //    지출수정
+    public void updateStock(int iodId, int stock){
+        realm.beginTransaction();
+        IngredientOrder ingOrder = realm.where(IngredientOrder.class).equalTo("id",iodId).findFirst();
+        ingOrder.setStock(stock);
+        realm.commitTransaction();
+    }
+
+    //    지출삭제
+    public void deleteIngOrder(int ingOrderId){
+        realm.beginTransaction();
+        IngredientOrder ingOrder = realm.where(IngredientOrder.class).equalTo("id",ingOrderId).findFirst();
+        ingOrder.deleteFromRealm();
+        realm.commitTransaction();
     }
 
 
 //    지출정보요청
-//    지출상세정보조회
-//    지출수정
-//    지출삭제
-//    지출정보출력
 }

@@ -37,8 +37,13 @@ public class SalesView extends RelativeLayout {
     }
 
     public void setMenuInfo(SalesItem salesInfo) {
-        tv_item_sales.setText(salesInfo.getSaleTitle());
-        tv_item_sales_cost.setText(String.valueOf(salesInfo.getCost()));
+        if(salesInfo.getType()==1){
+            tv_item_sales.setText(salesInfo.getSaleTitle()+"번 테이블 수입");
+            tv_item_sales_cost.setText("+"+String.valueOf(salesInfo.getCost()));
+        }else if(salesInfo.getType()==2){
+            tv_item_sales.setText(salesInfo.getSaleTitle()+" 구입");
+            tv_item_sales_cost.setText(("-"+String.valueOf(salesInfo.getCost())));
+        }
         DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
         String tempDate = sdFormat.format(salesInfo.getDate());
         tv_item_sales_date.setText(tempDate);

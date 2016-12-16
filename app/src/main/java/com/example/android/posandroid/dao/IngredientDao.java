@@ -72,8 +72,4 @@ public  class IngredientDao {
         ing.setStock(ing.getStock()-stock);
         realm.commitTransaction();
     }
-
-
-
-
 }

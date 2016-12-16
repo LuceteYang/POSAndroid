@@ -15,6 +15,7 @@ public  class MessageHelper {
         public static final int MENUACTIVITY = 0;
         public static final int INGREDIENTACTIVITY = 1;
         public static final int MAINACTIVITY = 2;
+        public static final int SALESACTIVITY = 3;
     }
     public static class MessageType{
 //        public static final int BOOKMARK_REFLASH = 101;

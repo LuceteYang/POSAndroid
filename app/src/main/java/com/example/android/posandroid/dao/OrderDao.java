@@ -37,6 +37,11 @@ public class OrderDao {
         return realm.where(Order.class).equalTo("table",tableId).isNull("paymentDate").findFirst();
     }
 
+    //    주문내역조회
+    public Order orderInfoById(int orderId){
+        return realm.where(Order.class).equalTo("id",orderId).findFirst();
+    }
+    //     주문내역수정
     public void updateCount(int orderId,int headcount){
         realm.beginTransaction();
         Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
@@ -61,7 +66,13 @@ public class OrderDao {
     }
     public List<Order> allOrderInfo(){
         return realm.where(Order.class).isNotNull("paymentDate").findAll();
-
+    }
+    //    수입삭제
+    public void deleteOrder(int orderId){
+        realm.beginTransaction();
+        Order ingOrder = realm.where(Order.class).equalTo("id",orderId).findFirst();
+        ingOrder.deleteFromRealm();
+        realm.commitTransaction();
     }
 
 /*    //    메뉴목록출력
@@ -91,8 +102,6 @@ public class OrderDao {
 //    주문내역출력
 //    영수증출력
 //    수입상세조회
-//    수입수정
-//    수입삭제
 //    테이블통계조회
 //    요일통계조회
 //    시간대통계조회

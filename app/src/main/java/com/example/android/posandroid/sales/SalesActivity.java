@@ -1,13 +1,19 @@
 package com.example.android.posandroid.sales;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.Toast;
 
 import com.example.android.posandroid.R;
+import com.example.android.posandroid.config.MessageHelper;
 import com.example.android.posandroid.dao.IngredientDao;
 import com.example.android.posandroid.dao.IngredientOrderDao;
 import com.example.android.posandroid.dao.MenuDao;
@@ -30,7 +36,17 @@ public class SalesActivity extends AppCompatActivity {
     OrderDao od;
     IngredientOrderDao iod;
     IngredientDao id;
-    int type;
+    int viewType;   //1 다보기 2 수입 3 지출
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MessageHelper.MessageType.REFLASH:
+                    initValue();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,54 +70,69 @@ public class SalesActivity extends AppCompatActivity {
         btn_sales_income.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                type=2;
+                viewType=2;
                 initValue();
             }
         });
         btn_sales_expense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                type=3;
+                viewType=3;
                 initValue();
             }
         });
         btn_sales_all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                type=1;
+                viewType=1;
                 initValue();
             }
         });
         lv_sales.setAdapter(sa);
-        type=1;
+        lv_sales.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplication(),SalesDetailActivity.class);
+                SalesItem obj = (SalesItem)adapterView.getAdapter().getItem(i);
+                intent.putExtra("type",obj.getType());
+                intent.putExtra("id",obj.getId());
+                startActivity(intent);
+            }
+        });
+        MessageHelper.getInstance().addActivity(new MessageHelper.ActivityData(MessageHelper.ActivityType.SALESACTIVITY, handler));
+        viewType=1;
         initValue();
     }
     public void initValue(){
         List<SalesItem> siList = new ArrayList<>();
         int count = 0;
-        if(type==2||type==1){
+        if(viewType==2||viewType==1){
             //수입만
             List<Order> orderlist = od.allOrderInfo();
             for(int i=0;i<orderlist.size();i++){
                 Order o = orderlist.get(i);
                 SalesItem si = new SalesItem();
-                si.setCost("+"+String.valueOf(o.getPrice()));
+                si.setCost(o.getPrice());
                 si.setDate(o.getDate());
-                si.setSaleTitle(String.valueOf(o.getTable())+"번 테이블 수입");
+                si.setSaleTitle(String.valueOf(o.getTable()));
+                si.setType(1);
+                si.setId(o.getId());
                 siList.add(si);
                 count+=o.getPrice();
             }
         }
-        if(type==1||type==3){
+        if(viewType==1||viewType==3){
             //지출만
             List<IngredientOrder> ingOrderlist = iod.allIngredientOrderInfo();
             for(int i=0;i<ingOrderlist.size();i++){
                 IngredientOrder io = ingOrderlist.get(i);
                 Ingredient ing = id.ingInfo(io.getIngId());
                 SalesItem si = new SalesItem();
-                si.setCost("-"+String.valueOf(io.getPrice()*io.getStock()));
+                si.setCost(io.getPrice()*io.getStock());
                 si.setDate(io.getDate());
-                si.setSaleTitle(ing.getName()+" 구입");
+                si.setSaleTitle(ing.getName());
+                si.setId(io.getId());
+                si.setType(2);
                 siList.add(si);
                 count-=io.getPrice()*io.getStock();
             }
@@ -113,13 +144,13 @@ public class SalesActivity extends AppCompatActivity {
                 return o1.getDate().compareTo(o2.getDate());
             }
         });
-        if(type==1){
+        if(viewType==1){
             //다보기
             tv_sales_total.setText("순이익:  "+String.valueOf(count)+"원");
-        }else if(type==2){
+        }else if(viewType==2){
             //수입
             tv_sales_total.setText("총수입:  "+String.valueOf(count)+"원");
-        }else if(type==3){
+        }else if(viewType==3){
             //지출
             tv_sales_total.setText("총지출:  "+String.valueOf(count)+"원");
         }
