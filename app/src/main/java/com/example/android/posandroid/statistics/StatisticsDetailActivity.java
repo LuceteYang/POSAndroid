@@ -130,8 +130,6 @@ public class StatisticsDetailActivity extends AppCompatActivity {
                 t++;
             }
             tv_best_content.setText(str1);
-
-
         }else if(type==3){
             //요일
             tv_best_statistics.setText("Best 요일");

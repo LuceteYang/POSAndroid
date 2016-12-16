@@ -18,7 +18,7 @@ public  class IngredientOrderDao {
     }
 
     Realm realm;
-//    재료주문
+//    재료납품
     public void insertIngredientOrder(int ingId, int stock, int price){
         Date now = new Date();
         realm.beginTransaction();
@@ -53,7 +53,4 @@ public  class IngredientOrderDao {
         ingOrder.deleteFromRealm();
         realm.commitTransaction();
     }
-
-
-//    지출정보요청
 }

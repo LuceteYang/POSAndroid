@@ -19,7 +19,7 @@ public class OrderDao {
         this.realm = Realm.getDefaultInstance();
     }
 
-    //    주문내역입력
+    //    주문입력
     public Order insertOrder(int tableId,int headcount){
         Date now = new Date();
         realm.beginTransaction();
@@ -32,30 +32,30 @@ public class OrderDao {
         return order;
     }
 
-    //    주문내역조회
+    //    테이블 번호로 주문조회
     public Order orderInfo(int tableId){
         return realm.where(Order.class).equalTo("table",tableId).isNull("paymentDate").findFirst();
     }
 
-    //    주문내역조회
+    //    주문번호로 주문조회
     public Order orderInfoById(int orderId){
         return realm.where(Order.class).equalTo("id",orderId).findFirst();
     }
-    //     주문내역수정
+    //     인원수 수정
     public void updateCount(int orderId,int headcount){
         realm.beginTransaction();
         Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
         order.setHeadcount(headcount);
         realm.commitTransaction();
     }
-
+    //     주문 총액 변경
     public void updatePrice(int orderId, int price){
         realm.beginTransaction();
         Order order = realm.where(Order.class).equalTo("id",orderId).findFirst();
         order.setPrice(price);
         realm.commitTransaction();
     }
-
+    //    결제 수단 저장
     public void orderPay(int orderId, int paymentType){
         Date now = new Date();
         realm.beginTransaction();
@@ -64,6 +64,8 @@ public class OrderDao {
         order.setPaymentDate(now);
         realm.commitTransaction();
     }
+
+    //  결제된 주문 조회
     public List<Order> allOrderInfo(){
         return realm.where(Order.class).isNotNull("paymentDate").findAll();
     }
@@ -74,38 +76,5 @@ public class OrderDao {
         ingOrder.deleteFromRealm();
         realm.commitTransaction();
     }
-
-/*    //    메뉴목록출력
-    public List<Menu> menuList(){
-        return realm.where(Menu.class).findAll();
-    }
-    //    메뉴삭제
-    public void deleteMenu(String menuName){
-        realm.beginTransaction();
-        Menu menu = realm.where(Menu.class).equalTo("name",menuName).findFirst();
-        menu.deleteFromRealm();
-        realm.commitTransaction();
-    }
-
-
-    //    메뉴수정
-    public void editMenu(String name,int cost,String detail, int calory){
-        realm.beginTransaction();
-        Menu menu = realm.where(Menu.class).equalTo("name",name).findFirst();
-        menu.setCost(cost);
-        menu.setCalory(calory);
-        menu.setDetail(detail);
-        realm.commitTransaction();
-    }*/
-
-//    주문내역수정
-//    주문내역출력
-//    영수증출력
-//    수입상세조회
-//    테이블통계조회
-//    요일통계조회
-//    시간대통계조회
-
-
 
 }

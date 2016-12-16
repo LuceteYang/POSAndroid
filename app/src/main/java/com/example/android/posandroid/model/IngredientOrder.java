@@ -16,7 +16,7 @@ public class IngredientOrder extends RealmObject{
     int ingId;
     //납품일자
     Date date;
-    //납품일자
+    //납품시가격
     int price;
 
     public int getPrice() {

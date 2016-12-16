@@ -89,8 +89,10 @@ public class SalesDetailActivity extends AppCompatActivity {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (itemType == 1) {
+                            //주문내역 삭제
                             Order o = od.orderInfoById(itemId);
                             od.deleteOrder(o.getId());
+                            omd.deleteByOrderId(o.getId());
                         } else if (itemType == 2) {
                             IngredientOrder io = iod.IngredientOrderInfo(itemId);
                             iod.deleteIngOrder(io.getId());
@@ -106,6 +108,12 @@ public class SalesDetailActivity extends AppCompatActivity {
                         });
                 alert.show();
 
+            }
+        });
+        btn_sales_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
@@ -129,7 +137,7 @@ public class SalesDetailActivity extends AppCompatActivity {
                 tv_sales_detail_1.setText(text);
                 tv_sales_detail_2.setText("인원 : ");
                 tv_sales_detail_4.setText(String.valueOf(o.getHeadcount()));
-                DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 String tempDate = sdFormat.format(o.getDate());
                 String text1="총 금액 : "+String.valueOf(total)+"원\n"+"날짜 : "+tempDate;
                 tv_sales_detail_3.setText(text1);
@@ -142,7 +150,7 @@ public class SalesDetailActivity extends AppCompatActivity {
                 tv_sales_detail_1.setText(text);
                 tv_sales_detail_2.setText("주문수량 : ");
                 tv_sales_detail_4.setText(String.valueOf(io.getStock()));
-                DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 String tempDate = sdFormat.format(io.getDate());
                 String text1="총 금액 : "+"-"+String.valueOf(ing.getCost()*io.getStock())+"원\n"+"날짜 : "+tempDate;
                 tv_sales_detail_3.setText(text1);

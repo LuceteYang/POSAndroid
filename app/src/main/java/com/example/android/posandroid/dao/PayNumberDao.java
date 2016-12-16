@@ -17,6 +17,7 @@ public class PayNumberDao {
         this.realm = Realm.getDefaultInstance();
     }
 
+    // 고유번호 저장
     public void saveNumber(int orderId,int num){
         realm.beginTransaction();
         PayNumber payNumber = realm.createObject(PayNumber.class);
@@ -25,7 +26,4 @@ public class PayNumberDao {
         realm.commitTransaction();
     }
 
-//    메뉴가격조회
-//    수입삭제
-//    메뉴통계조회
 }

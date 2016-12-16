@@ -89,32 +89,32 @@ public class MainActivity extends AppCompatActivity {
         btn_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                checkPassword(MenuActivity.class);
-                startActivity(new Intent(getApplicationContext(),MenuActivity.class));
+                checkPassword(MenuActivity.class);
+//                startActivity(new Intent(getApplicationContext(),MenuActivity.class));
 
             }
         });
         btn_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                checkPassword(IngredientActivity.class);
-                startActivity(new Intent(getApplicationContext(),IngredientActivity.class));
+                checkPassword(IngredientActivity.class);
+//                startActivity(new Intent(getApplicationContext(),IngredientActivity.class));
 
             }
         });
         btn_sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                checkPassword(SalesActivity.class);
-                startActivity(new Intent(getApplicationContext(),SalesActivity.class));
+                checkPassword(SalesActivity.class);
+//                startActivity(new Intent(getApplicationContext(),SalesActivity.class));
 
             }
         });
         btn_statistic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                checkPassword(StatisticsActivity.class);
-                startActivity(new Intent(getApplicationContext(),StatisticsActivity.class));
+                checkPassword(StatisticsActivity.class);
+//                startActivity(new Intent(getApplicationContext(),StatisticsActivity.class));
 
             }
         });
